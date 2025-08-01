@@ -174,7 +174,7 @@
       .card-container {
           width: 100%;
           max-width: 400px;
-          height: 250px;
+          height: 210px;
           perspective: 1000px;
           cursor: pointer;
           margin: 0 auto 1.5rem auto;
@@ -211,14 +211,14 @@
       .card-front {
           background: #fefce8; /* 薄い黄色 */
           color: #111827;      /* 黒字 */
-          font-size: 1.7rem;
+          font-size: 1.5rem;
           font-weight: bold;
       }
 
       .card-back {
           background: #f0f9ff; /* 薄い水色 */
           color: #111827;      /* 黒字 */
-          font-size: 1.5rem;
+          font-size: 1.3rem;
           font-weight: 600;
           transform: rotateY(180deg);
       }
@@ -1223,15 +1223,15 @@
                 <input type="range" id="speechRateSlider" min="0.5" max="2" step="0.1" value="${appSettings.speechRate}">
                 <span id="speechRateValue">${parseFloat(appSettings.speechRate).toFixed(1)}</span>
               </div>
+              
+              <div class="choices-container">
+                ${choicesHtml}
+              </div>
 
               <div class="counters">
                 <span>のこり: ${words.length - idx}</span>
                 <span>正解: ${checked.length}</span>
                 <span>不正解: ${unchecked.length}</span>
-              </div>
-              
-              <div class="choices-container">
-                ${choicesHtml}
               </div>
 
               <div class="action-buttons-container">
