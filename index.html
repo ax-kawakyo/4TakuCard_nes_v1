@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja">
   <head>
@@ -177,7 +178,7 @@
           height: 210px;
           perspective: 1000px;
           cursor: pointer;
-          margin: 0 auto 1.5rem auto;
+          margin: 0 auto 1rem auto;
       }
 
       .card {
@@ -252,13 +253,13 @@
           gap: 0.75rem;
           width: 100%;
           max-width: 400px;
-          margin: 1.5rem auto 1rem auto;
+          margin: 0 auto 1rem auto;
           counter-reset: choice-counter; /* CSSカウンターを初期化 */
       }
 
       .choice-btn {
           width: 100%;
-          padding: 0.8rem 1rem;
+          padding: 0.6rem 1rem;
           background: #fff;
           color: #1f2937;
           border: 1px solid #d1d5db;
@@ -353,17 +354,44 @@
 
       .sub-btn {
           padding: 0.5rem 1.2rem;
-          background: #e5e7eb;
-          color: #333;
-          border: none;
+          background-color: #fff;
+          color: #1f2937;
+          border: 1px solid #d1d5db;
           border-radius: 7px;
           font-size: 1rem;
           font-weight: 500;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: background-color 0.2s, border-color 0.2s;
       }
       .sub-btn:hover {
-          background: #d1d5db;
+          background-color: #f3f4f6;
+      }
+      
+      .sub-btn-suspend {
+        background-color: #f0fdf4;
+        border-color: #a7f3d0;
+      }
+      .sub-btn-suspend:hover {
+          background-color: #dcfce7;
+          border-color: #6ee7b7;
+      }
+
+      .sub-btn-reset {
+          background-color: #fef2f2;
+          border-color: #fecaca;
+      }
+      .sub-btn-reset:hover {
+          background-color: #fee2e2;
+          border-color: #fca5a5;
+      }
+
+      .sub-btn-review {
+          background-color: #f0f9ff;
+          border-color: #bae6fd;
+      }
+      .sub-btn-review:hover {
+          background-color: #e0f2fe;
+          border-color: #7dd3fc;
       }
       
       .next-btn {
@@ -560,7 +588,7 @@
           gap: 0.75rem;
           width: 100%;
           max-width: 400px;
-          margin: 0 auto 1.5rem auto;
+          margin: 0 auto 1rem auto;
       }
 
       .speak-btn-icon {
@@ -1142,8 +1170,8 @@
                   <span>不正解: ${unchecked.length}</span>
                 </div>
                 <div class="sub-btn-row">
-                  <button id="resetBtn" class="sub-btn">リセット</button>
-                  <button id="reviewBtn" class="sub-btn">「不正解」を復習</button>
+                  <button id="resetBtn" class="sub-btn sub-btn-reset">リセット</button>
+                  <button id="reviewBtn" class="sub-btn sub-btn-review">「不正解」を復習</button>
                 </div>
                 <div class="mt-8">
                   <button id="backBtn" class="back-link">« リスト選択にもどる</button>
@@ -1166,9 +1194,9 @@
           } else {
              actionButtonsHtml = `
                 <div class="sub-btn-row">
-                  <button id="suspendBtn" class="sub-btn">中断</button>
-                  <button id="resetBtn" class="sub-btn">リセット</button>
-                  <button id="reviewBtn" class="sub-btn">「不正解」を復習</button>
+                  <button id="suspendBtn" class="sub-btn sub-btn-suspend">中断</button>
+                  <button id="resetBtn" class="sub-btn sub-btn-reset">リセット</button>
+                  <button id="reviewBtn" class="sub-btn sub-btn-review">「不正解」を復習</button>
                 </div>
              `;
           }
