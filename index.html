@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>４Takuカード（ネス版）</title>
+    <title>カスタム学習-4Taku_v0</title>
     <style>
       body {
           background: #f3f4f6;
@@ -13,6 +13,7 @@
       }
 
       .container {
+          position: relative;
           width: 100%;
           max-width: 420px;
           margin: 2rem auto;
@@ -31,21 +32,21 @@
       }
       
       .flashcard-page-title {
-          font-size: 1.4rem;
-          font-weight: bold;
+          font-size: 1.1rem;
+          font-weight: 600;
           color: #222;
           margin-bottom: 0.5rem;
           text-align: center;
       }
       .flashcard-page-title span {
           color: #4b5563;
-          font-weight: normal;
+          font-weight: 600;
           font-size: 1.1rem;
       }
       
       .problem-number {
-          font-size: 1.4rem;
-          font-weight: bold;
+          font-size: 1.1rem;
+          font-weight: 600;
           color: #4b5563;
           text-align: left;
           margin-bottom: 1rem;
@@ -173,7 +174,7 @@
       .card-container {
           width: 100%;
           max-width: 400px;
-          height: 300px;
+          height: 250px;
           perspective: 1000px;
           cursor: pointer;
           margin: 0 auto 1.5rem auto;
@@ -197,12 +198,12 @@
           height: 100%;
           backface-visibility: hidden;
           display: flex;
-          justify-content: center;
-          align-items: center;
+          justify-content: flex-start;
+          align-items: flex-start;
           border-radius: 15px;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
           padding: 1.5rem;
-          text-align: center;
+          text-align: left;
           word-break: break-word;
           box-sizing: border-box;
       }
@@ -225,6 +226,12 @@
       .done-card .card-front {
           font-size: 2rem;
           color: #15803d; /* 完了テキストを緑色に */
+      }
+      
+      .done-card .card-face {
+          justify-content: center;
+          align-items: center;
+          text-align: center;
       }
 
       .counters {
@@ -251,7 +258,7 @@
 
       .choice-btn {
           width: 100%;
-          padding: 1rem;
+          padding: 0.8rem 1rem;
           background: #fff;
           color: #1f2937;
           border: 1px solid #d1d5db;
@@ -401,6 +408,23 @@
           text-align: center;
       }
 
+      /* Settings Icon */
+      #settingsBtn {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          font-size: 1.8rem;
+          cursor: pointer;
+          color: #6b7280;
+          transition: color 0.2s, transform 0.2s;
+      }
+      #settingsBtn:hover {
+          color: #1f2937;
+          transform: rotate(30deg);
+      }
+
       /* Modal Styles */
       .modal-overlay {
           position: fixed;
@@ -408,12 +432,19 @@
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(0, 0, 0, 0.6);
           display: flex;
           justify-content: center;
           align-items: center;
           z-index: 1000;
+          opacity: 0;
+          pointer-events: none;
           transition: opacity 0.3s ease;
+      }
+
+      .modal-overlay.is-visible {
+        opacity: 1;
+        pointer-events: auto;
       }
 
       .modal-content {
@@ -427,7 +458,7 @@
           transition: transform 0.3s ease;
       }
 
-      .modal-overlay:not([style*="display: none"]) .modal-content {
+      .modal-overlay.is-visible .modal-content {
         transform: translateY(0);
       }
 
@@ -459,6 +490,46 @@
           color: #333;
       }
 
+      .modal-body {
+          margin-bottom: 1.5rem;
+      }
+      
+      .modal-footer {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.5rem;
+      }
+
+      .form-group {
+          margin-bottom: 1rem;
+      }
+      .form-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: #374151;
+      }
+      .form-group input {
+          width: 100%;
+          padding: 0.6rem;
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          font-size: 1rem;
+          box-sizing: border-box;
+      }
+      #passwordError {
+          color: #ef4444;
+          font-size: 0.9rem;
+          margin-top: 0.5rem;
+          height: 1em;
+      }
+      
+      .settings-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+      }
+
       #repoFileList {
           max-height: 60vh;
           overflow-y: auto;
@@ -481,6 +552,50 @@
       .repo-file-list li:hover {
           background-color: #f3f4f6;
       }
+
+      .speech-controls-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.75rem;
+          width: 100%;
+          max-width: 400px;
+          margin: 0 auto 1.5rem auto;
+      }
+
+      .speak-btn-icon {
+          background: #f0f9ff;
+          color: #0c4a6e;
+          border: 1px solid #7dd3fc;
+          border-radius: 50%;
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: background-color 0.2s, color 0.2s;
+          width: 44px;
+          height: 44px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0;
+          flex-shrink: 0;
+      }
+      .speak-btn-icon:hover {
+          background: #e0f2fe;
+          color: #0369a1;
+      }
+
+      .speech-controls-container input[type="range"] {
+          flex-grow: 1;
+          margin: 0;
+      }
+
+      .speech-controls-container #speechRateValue {
+          font-size: 1rem;
+          color: #4b5563;
+          min-width: 2.5em;
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+      }
     </style>
 <link rel="stylesheet" href="/index.css">
 </head>
@@ -491,15 +606,32 @@
       let currentList = null;
       let currentMode = "learn";
       let progressData = {}; 
+      let appSettings = {};
       const app = document.getElementById("app");
 
       const LISTS_KEY = 'flashcard_lists';
       const PROGRESS_KEY = 'flashcard_progress';
+      const SETTINGS_KEY = 'flashcard_settings';
+
+      const defaultSettings = {
+        problemNo: 1,
+        chapter: 2,
+        pointNo: 3,
+        cardBack: 4,
+        cardFront: 5,
+        correctAnswer: 6,
+        choice1: 7,
+        choice2: 8,
+        choice3: 9,
+        choice4: 10,
+        speechRate: 1.0,
+      };
 
       function saveState() {
           try {
               localStorage.setItem(LISTS_KEY, JSON.stringify(dynamicLists));
               localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
+              localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
           } catch (e) {
               console.error("Failed to save state:", e);
               alert("データの保存に失敗しました。");
@@ -510,23 +642,29 @@
           try {
               const savedLists = localStorage.getItem(LISTS_KEY);
               const savedProgress = localStorage.getItem(PROGRESS_KEY);
+              const savedSettings = localStorage.getItem(SETTINGS_KEY);
               if (savedLists) {
                   dynamicLists = JSON.parse(savedLists);
               }
               if (savedProgress) {
                   progressData = JSON.parse(savedProgress);
               }
+              if (savedSettings) {
+                appSettings = { ...defaultSettings, ...JSON.parse(savedSettings) };
+              } else {
+                appSettings = { ...defaultSettings };
+              }
           } catch (e) {
               console.error("Failed to load state:", e);
-              localStorage.removeItem(LISTS_KEY);
-              localStorage.removeItem(PROGRESS_KEY);
+              localStorage.clear(); // Clear all data on parsing error
           }
       }
 
       function showHomePage() {
         app.innerHTML = `
           <div class="container">
-            <h1 class="title">４Takuカード（ネス版）</h1>
+            <button id="settingsBtn" title="設定">⚙️</button>
+            <h1 class="title">カスタム学習-4Taku_v0</h1>
             <div id="lists"></div>
             <div class="mt-8 text-center">
               <button id="selectFromRepoBtn" class="add-btn" style="margin-bottom: 1rem;">リスト選択</button>
@@ -534,16 +672,94 @@
               <button id="addListBtn" class="add-btn-secondary">リスト追加</button>
             </div>
           </div>
-          <div id="repoModal" class="modal-overlay" style="display: none;">
+          <div id="repoModal" class="modal-overlay">
             <div class="modal-content">
               <div class="modal-header">
                 <h2>GitHubからリストを選択</h2>
-                <button id="closeModalBtn" class="close-button">&times;</button>
+                <button class="close-button">&times;</button>
               </div>
               <div id="repoFileList">
                 <p>読み込み中...</p>
               </div>
             </div>
+          </div>
+          <div id="passwordModal" class="modal-overlay">
+             <div class="modal-content">
+               <div class="modal-header">
+                  <h2>パスワード入力</h2>
+                  <button class="close-button">&times;</button>
+               </div>
+               <div class="modal-body">
+                  <p>設定を変更するにはパスワード（4桁）を入力してください。</p>
+                  <div class="form-group">
+                      <label for="passwordInput">パスワード</label>
+                      <input type="password" id="passwordInput" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                  </div>
+                  <div id="passwordError"></div>
+               </div>
+               <div class="modal-footer">
+                   <button id="passwordSubmitBtn" class="mode-btn learn">確認</button>
+               </div>
+             </div>
+          </div>
+          <div id="settingsModal" class="modal-overlay">
+             <div class="modal-content">
+               <div class="modal-header">
+                  <h2>アプリ設定</h2>
+                  <button class="close-button">&times;</button>
+               </div>
+               <div class="modal-body">
+                  <form id="settingsForm">
+                    <p>TSVファイルの各データが何列目にあるかを指定してください。</p>
+                    <div class="settings-grid">
+                      <div class="form-group">
+                        <label for="col-cardFront">カード表 (問題)</label>
+                        <input type="number" id="col-cardFront" data-key="cardFront" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-cardBack">カード裏 (ヒント)</label>
+                        <input type="number" id="col-cardBack" data-key="cardBack" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-correctAnswer">正解</label>
+                        <input type="number" id="col-correctAnswer" data-key="correctAnswer" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-choice1">選択肢1</label>
+                        <input type="number" id="col-choice1" data-key="choice1" min="1">
+                      </div>
+                       <div class="form-group">
+                        <label for="col-choice2">選択肢2</label>
+                        <input type="number" id="col-choice2" data-key="choice2" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-choice3">選択肢3</label>
+                        <input type="number" id="col-choice3" data-key="choice3" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-choice4">選択肢4</label>
+                        <input type="number" id="col-choice4" data-key="choice4" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-problemNo">問題No</label>
+                        <input type="number" id="col-problemNo" data-key="problemNo" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-chapter">Chapter</label>
+                        <input type="number" id="col-chapter" data-key="chapter" min="1">
+                      </div>
+                      <div class="form-group">
+                        <label for="col-pointNo">PointNo</label>
+                        <input type="number" id="col-pointNo" data-key="pointNo" min="1">
+                      </div>
+                    </div>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                   <button id="saveSettingsBtn" class="mode-btn learn">保存</button>
+                   <button id="resetSettingsBtn" class="sub-btn">リセット</button>
+               </div>
+             </div>
           </div>
         `;
         
@@ -557,8 +773,6 @@
                 const progress = progressData[listId];
                 let progressHtml = '';
                 let modeIndicator = '';
-
-                const isQuizList = list.words.length > 0 && list.words[0].choices;
 
                 if (progress) {
                     const remaining = progress.remaining.length;
@@ -626,7 +840,8 @@
                 }
             };
         });
-
+        
+        document.getElementById("settingsBtn").onclick = openPasswordModal;
         document.getElementById("selectFromRepoBtn").onclick = openRepoModal;
         document.getElementById("addListBtn").onclick = () => document.getElementById("fileInput").click();
         document.getElementById("fileInput").onchange = async (e) => {
@@ -640,33 +855,40 @@
             saveState();
             showHomePage();
           } else {
-            alert("ファイルが空か、形式が正しくありません。\nTSVファイルは10列以上の形式である必要があります。");
+            alert("ファイルが空か、形式が正しくありません。\n設定された列番号がファイルの列数を超えている可能性があります。");
           }
           target.value = "";
         };
       }
 
       function parseTsv(text) {
+        const s = appSettings;
+        const requiredCols = [s.cardFront, s.cardBack, s.correctAnswer, s.choice1, s.choice2, s.choice3, s.choice4];
+        const maxCol = Math.max(...requiredCols);
+
         return text.trim().split(/\r?\n/).map((line) => {
             const parts = line.split("\t");
-            if (parts.length < 10) return null;
+            if (parts.length < maxCol) return null;
 
-            const problemNo = parts[0]?.trim();
-            const chapter = parts[1]?.trim();
-            const pointNo = parts[2]?.trim();
-            const japanese = parts[3]?.trim(); // Back
-            const english = parts[4]?.trim(); // Front
-            const correctAnswer = parts[5]?.trim();
+            // 1-based index to 0-based
+            const getPart = (col) => parts[col - 1]?.trim() || '';
+
+            const english = getPart(s.cardFront);
+            const japanese = getPart(s.cardBack);
+            const correctAnswer = getPart(s.correctAnswer);
             const choices = [
-                parts[6]?.trim(),
-                parts[7]?.trim(),
-                parts[8]?.trim(),
-                parts[9]?.trim()
+                getPart(s.choice1),
+                getPart(s.choice2),
+                getPart(s.choice3),
+                getPart(s.choice4),
             ];
             
+            const problemNo = getPart(s.problemNo);
+            const chapter = getPart(s.chapter);
+            const pointNo = getPart(s.pointNo);
             const number = `${problemNo}-${chapter}-${pointNo}`;
 
-            if (english && japanese && correctAnswer && choices.every(c => c)) {
+            if (english && japanese && correctAnswer && choices.every(ch => ch)) {
                 return { number, english, japanese, correctAnswer, choices };
             }
             return null;
@@ -675,15 +897,15 @@
       
       function openRepoModal() {
         const modal = document.getElementById('repoModal');
-        const fileListDiv = document.getElementById('repoFileList');
-        modal.style.display = 'flex';
-        document.getElementById('closeModalBtn').onclick = closeRepoModal;
+        modal.classList.add('is-visible');
+        modal.querySelector('.close-button').onclick = () => modal.classList.remove('is-visible');
         modal.onclick = (e) => {
           if (e.target === modal) {
-            closeRepoModal();
+            modal.classList.remove('is-visible');
           }
         };
 
+        const fileListDiv = document.getElementById('repoFileList');
         fileListDiv.innerHTML = '<p>読み込み中...</p>';
 
         fetch('./manifest.json')
@@ -700,11 +922,10 @@
             }
             const ul = document.createElement('ul');
             ul.className = 'repo-file-list';
-            data.files.forEach(filepath => {
-              const filename = filepath.split('/').pop();
+            data.files.forEach(filename => {
               const li = document.createElement('li');
               li.textContent = filename.replace(/\.[^/.]+$/, "");
-              li.onclick = () => loadFileFromRepo(filepath);
+              li.onclick = () => loadFileFromRepo(filename);
               ul.appendChild(li);
             });
             fileListDiv.innerHTML = '';
@@ -712,36 +933,112 @@
           })
           .catch(error => {
             console.error('Error loading manifest:', error);
-            fileListDiv.innerHTML = `<p style="color: red;">エラー: ${error.message}</p><p style="font-size: 0.8em;">リポジトリのルートにmanifest.jsonを設置してください。</p>`;
+            fileListDiv.innerHTML = `<p style="color: red;">エラー: ${error.message}</p><p style="font-size: 0.8em;">リポジトリのルートにdata/manifest.jsonを設置してください。</p>`;
           });
       }
 
-      function closeRepoModal() {
-        const modal = document.getElementById('repoModal');
-        modal.style.display = 'none';
-      }
-
-      async function loadFileFromRepo(filepath) {
+      async function loadFileFromRepo(filename) {
         try {
-          const response = await fetch(`./${filepath}`);
+          const response = await fetch(`./${filename}`);
           if (!response.ok) {
-            throw new Error(`ファイル'${filepath}'を読み込めませんでした。`);
+            throw new Error(`ファイル'${filename}'を読み込めませんでした。`);
           }
           const text = await response.text();
           const words = parseTsv(text);
           if (words.length > 0) {
-            const listName = filepath.split('/').pop();
-            dynamicLists.push({ id: Date.now(), name: listName, words });
+            dynamicLists.push({ id: Date.now(), name: filename, words });
             saveState();
-            closeRepoModal();
+            document.getElementById('repoModal').classList.remove('is-visible');
             showHomePage();
           } else {
-            alert("ファイルが空か、形式が正しくありません。\nTSVファイルは10列以上の形式である必要があります。");
+            alert("ファイルが空か、形式が正しくありません。\n設定された列番号がファイルの列数を超えている可能性があります。");
           }
         } catch (error) {
           console.error('Error loading file from repo:', error);
           alert(`エラー: ${error.message}`);
         }
+      }
+
+      function openPasswordModal() {
+        const modal = document.getElementById('passwordModal');
+        modal.classList.add('is-visible');
+        const passwordInput = document.getElementById('passwordInput');
+        passwordInput.value = '';
+        passwordInput.focus();
+        document.getElementById('passwordError').textContent = '';
+
+        modal.querySelector('.close-button').onclick = () => modal.classList.remove('is-visible');
+        document.getElementById('passwordSubmitBtn').onclick = checkPassword;
+        passwordInput.onkeydown = (e) => {
+          if (e.key === 'Enter') {
+            checkPassword();
+          }
+        };
+      }
+
+      function checkPassword() {
+        const passwordInput = document.getElementById('passwordInput');
+        const errorDiv = document.getElementById('passwordError');
+        if (passwordInput.value === '1234') { // Simple hardcoded password
+          document.getElementById('passwordModal').classList.remove('is-visible');
+          openSettingsModal();
+        } else {
+          errorDiv.textContent = 'パスワードが違います。';
+          passwordInput.value = '';
+        }
+      }
+      
+      function openSettingsModal() {
+        const modal = document.getElementById('settingsModal');
+        modal.classList.add('is-visible');
+        const form = document.getElementById('settingsForm');
+
+        form.querySelectorAll('input').forEach(input => {
+            if (appSettings[input.dataset.key] !== undefined) {
+              input.value = appSettings[input.dataset.key];
+            }
+        });
+
+        modal.querySelector('.close-button').onclick = () => modal.classList.remove('is-visible');
+        document.getElementById('saveSettingsBtn').onclick = saveSettings;
+        document.getElementById('resetSettingsBtn').onclick = () => {
+            if (confirm('設定を初期値に戻しますか？')) {
+                appSettings = { ...defaultSettings };
+                 form.querySelectorAll('input').forEach(input => {
+                    const key = input.dataset.key;
+                    if (appSettings[key] !== undefined) {
+                      input.value = appSettings[key];
+                    }
+                });
+            }
+        };
+      }
+      
+      function saveSettings() {
+        const form = document.getElementById('settingsForm');
+        let isValid = true;
+        form.querySelectorAll('input').forEach(input => {
+          const key = input.dataset.key;
+          if (input.type === 'number') {
+            const value = parseInt(input.value, 10);
+            if (isNaN(value) || value < 1) {
+              isValid = false;
+            }
+            appSettings[key] = value;
+          } else if (input.type === 'range') {
+            const value = parseFloat(input.value);
+            appSettings[key] = value;
+          }
+        });
+
+        if (!isValid) {
+            alert('すべての列設定項目に1以上の数値を入力してください。');
+            return;
+        }
+
+        saveState();
+        document.getElementById('settingsModal').classList.remove('is-visible');
+        alert('設定を保存しました。');
       }
 
       function showFlashcardPage(resumeState = null) {
@@ -861,7 +1158,7 @@
 
           const word = words[idx];
           const cleanListName = currentList?.name.replace(/\.[^/.]+$/, "");
-          const modeTitle = currentMode === 'learn' ? '学習モード' : '4択テスト';
+          const modeTitle = currentMode === 'learn' ? '学習' : 'テスト';
           
           let actionButtonsHtml = '';
           if (isAnswered) {
@@ -886,14 +1183,12 @@
                   const isSelectedChoice = choice === word.selectedAnswer;
 
                   if (currentMode === 'learn') {
-                      // 覚えるモード：すべての選択肢に〇×を表示
                       if (isCorrectChoice) {
                           btnClass += ' correct';
                       } else {
                           btnClass += ' incorrect';
                       }
                   } else { // test mode
-                      // テストモード：選択したものだけ〇×を表示
                       if (isSelectedChoice) {
                           if (isCorrectChoice) {
                               btnClass += ' correct';
@@ -922,6 +1217,13 @@
                   </div>
                 </div>
               </div>
+
+              <div class="speech-controls-container">
+                <button id="speakBtn" class="speak-btn-icon" title="発音を聞く">🔊</button>
+                <input type="range" id="speechRateSlider" min="0.5" max="2" step="0.1" value="${appSettings.speechRate}">
+                <span id="speechRateValue">${parseFloat(appSettings.speechRate).toFixed(1)}</span>
+              </div>
+
               <div class="counters">
                 <span>のこり: ${words.length - idx}</span>
                 <span>正解: ${checked.length}</span>
@@ -945,6 +1247,19 @@
           document.getElementById("card-flipper").onclick = (e) => {
               isFlipped = !isFlipped;
               e.currentTarget.querySelector('.card').classList.toggle('is-flipped');
+          };
+
+          document.getElementById("speakBtn").onclick = () => {
+            speakText(word.english);
+          };
+
+          const speechRateSlider = document.getElementById('speechRateSlider');
+          const speechRateValueSpan = document.getElementById('speechRateValue');
+          speechRateSlider.oninput = () => {
+              const newRate = parseFloat(speechRateSlider.value);
+              appSettings.speechRate = newRate;
+              speechRateValueSpan.textContent = newRate.toFixed(1);
+              saveState(); // Save settings immediately
           };
           
           if (isAnswered) {
@@ -977,8 +1292,30 @@
       
       function cleanChoiceText(text) {
         if (typeof text !== 'string') return '';
-        // "3. " のような数字とドットの接頭辞を削除
         return text.replace(/^\s*\d+\.\s*/, '').trim();
+      }
+      
+      function speakText(textToSpeak, rateOverride = null) {
+        if (!('speechSynthesis' in window)) {
+          alert('お使いのブラウザは音声読み上げに対応していません。');
+          return;
+        }
+
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+        }
+        
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'en-US';
+        utterance.rate = rateOverride !== null ? rateOverride : (appSettings.speechRate || 1.0);
+        
+        const voices = window.speechSynthesis.getVoices();
+        const usVoice = voices.find(voice => voice.lang === 'en-US');
+        if (usVoice) {
+          utterance.voice = usVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
       }
 
       function initializeApp() {
